@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+PROJECT_CODENAME = File.basename(Dir.getwd)
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty32"
+  config.vm.network "private_network", ip: "192.168.33.12"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update -y
+    sudo apt-get install git -y
+    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    sudo apt-get install nodejs -y
+    sudo apt-get install build-essential -y
+    sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 libstdc++6:i386 -y
+    sudo apt-get install g++ -y
+    sudo apt-get install python-software-properties -y
+    sudo apt-get update -y
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    apt-get update -y
+    apt-get install yarn -y
+    mkdir /.npm-global
+    chown vagrant:vagrant /.npm-global
+    chmod 777 -R /.npm-global
+    npm config set prefix '/.npm-global'
+    echo "export PATH=/.npm-global/bin:\$PATH" >> /home/vagrant/.profile
+    echo "cd /vagrant" >> /home/vagrant/.profile
+    npm update npm
+    yarn global add yo bower gulp-cli generator-webapp node-sass
+    cd /vagrant/frontend
+    npm rebuild node-sass
+  SHELL
+  # npm update
+  # npm install
+  # nodejs node_modules/node-sass/scripts/install.js
+  config.vm.network :forwarded_port, host: 9000, guest: 9000
+  config.vm.network "private_network", ip: "192.168.33.15"
+end

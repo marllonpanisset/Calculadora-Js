@@ -1,0 +1,5 @@
+vagrant/frontend/node_modules
+vagrant/frontend/bower_components
+vagrant/frontend/test
+vagrant/frontend/.tmp
+vagrant/.vagrant

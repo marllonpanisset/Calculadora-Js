@@ -1,0 +1,1 @@
+Criei essa calculadora simples que soma, subtrai, multiplica e divide utilizando HTML,CSS e Javascript.
