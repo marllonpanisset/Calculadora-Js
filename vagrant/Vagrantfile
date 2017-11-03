@@ -17,20 +17,18 @@ Vagrant.configure(2) do |config|
     sudo apt-get install g++ -y
     sudo apt-get install python-software-properties -y
     sudo apt-get update -y
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    apt-get update -y
-    apt-get install yarn -y
     mkdir /.npm-global
     chown vagrant:vagrant /.npm-global
     chmod 777 -R /.npm-global
     npm config set prefix '/.npm-global'
     echo "export PATH=/.npm-global/bin:\$PATH" >> /home/vagrant/.profile
     echo "cd /vagrant" >> /home/vagrant/.profile
-    npm update npm
-    yarn global add yo bower gulp-cli generator-webapp node-sass
+    sudo npm update npm
+    sudo npm install -g yarn
+    yarn global add yo gulp-cli generator-webapp node-sass
     cd /vagrant/frontend
-    npm rebuild node-sass
+    yarn install
+    sudo npm rebuild node-sass
   SHELL
   # npm update
   # npm install
